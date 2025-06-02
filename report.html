@@ -1,0 +1,2362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultrasound Report System - Ajad Pharmacy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2980b9;
+            --accent-color: #16a085;
+            --danger-color: #e74c3c;
+            --warning-color: #f39c12;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+            --gray-color: #95a5a6;
+            --white-color: #ffffff;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --border-radius: 8px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            /* background-color: #f5f7fa; */
+            color: #333;
+            line-height: 3;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            /* background-color: var(--white-color); */
+            box-shadow: var(--shadow);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+        }
+.header {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.header::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 100%;
+    height: 200%;
+    background: rgba(255, 255, 255, 0.1);
+    transform: rotate(30deg);
+}
+
+/* .logo-container {
+    position: absolute;
+    left: 20px;
+    background-color: white;
+    padding: 10px;
+    border-radius: 10px;
+    z-index: 2;
+} */
+
+.logo {
+    height: 100px;  /* Increase this for larger logo */
+    width: auto;
+    display: block;
+    background-color: white;
+}
+
+
+.header-content {
+    z-index: 1;
+    text-align: center;
+    flex-grow: 1;
+}
+
+.header h1 {
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.pan-no {
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+
+        .nav-tabs {
+            display: flex;
+            background-color: var(--light-color);
+            border-bottom: 1px solid #ddd;
+        }
+
+        .nav-tab {
+            padding: 12px 20px;
+            cursor: pointer;
+            font-weight: 500;
+            color: var(--dark-color);
+            transition: all 0.3s ease;
+            border-right: 1px solid #ddd;
+        }
+
+        .nav-tab.active {
+            background-color: var(--white-color);
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--primary-color);
+        }
+
+        .nav-tab:hover:not(.active) {
+            background-color: rgba(52, 152, 219, 0.1);
+        }
+
+        .tab-content {
+            display: none;
+            padding: 25px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .form-section, .report-section, .history-section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            color: var(--primary-color);
+            margin: 25px 0 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--light-color);
+            font-weight: 600;
+        }
+
+        .sub-section-title {
+            font-size: 16px;
+            color: var(--secondary-color);
+            margin: 20px 0 10px;
+            font-weight: 500;
+        }
+
+        .form-row {
+            display: flex;
+            margin-bottom: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .form-row label {
+            width: 200px;
+            font-weight: 500;
+            margin-bottom: 5px;
+            color: var(--dark-color);
+        }
+
+        .form-row input, .form-row select, .form-row textarea {
+            flex: 1;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            min-width: 300px;
+            font-family: inherit;
+            font-size: 14px;
+            transition: border 0.3s ease;
+        }
+
+        .form-row input:focus, .form-row select:focus, .form-row textarea:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+
+        .form-row textarea {
+            height: 100px;
+            resize: vertical;
+        }
+
+        .multi-select {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 5px;
+        }
+
+        .multi-select label {
+            display: flex;
+            align-items: center;
+            font-weight: normal;
+            width: auto;
+            margin-right: 15px;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .multi-select label:hover {
+            background-color: rgba(52, 152, 219, 0.1);
+        }
+
+        .multi-select input[type="checkbox"], 
+        .multi-select input[type="radio"] {
+            margin-right: 8px;
+            cursor: pointer;
+            width: 16px;
+            height: 16px;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 12px 25px;
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            min-width: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        button i {
+            font-size: 16px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .btn-success {
+            background-color: var(--accent-color);
+        }
+
+        .btn-success:hover {
+            background-color: #1abc9c;
+        }
+
+        .btn-warning {
+            background-color: var(--warning-color);
+        }
+
+        .btn-warning:hover {
+            background-color: #e67e22;
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+        }
+
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .report {
+            border: 1px solid #e0e0e0;
+            padding: 30px;
+            margin-top: 20px;
+            /* background-color: white; */
+            border-radius: var(--border-radius);
+            position: relative;
+        }
+
+        .report::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+        }
+
+        .report-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .report-header h2 {
+            margin-bottom: 5px;
+            color: var(--dark-color);
+            font-size: 24px;
+        }
+
+        .report-details {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        .report-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: sans-serif;
+}
+
+.report-table td {
+  padding: 4px 12px;
+  vertical-align: top;
+}
+
+
+
+
+        .report-details div {
+            margin-bottom: 10px;
+            min-width: 200px;
+        }
+
+        .report-content {
+            line-height: 1.7;
+        }
+
+        .report-footer {
+            margin-top: 40px;
+            text-align: right;
+        }
+
+        .signature {
+            margin-top: 50px;
+            border-top: 1px solid #333;
+            display: inline-block;
+            padding-top: 5px;
+            font-weight: 600;
+        }
+
+        .measurement {
+            display: inline-flex;
+            align-items: center;
+            margin-left: 10px;
+        }
+
+        .measurement input {
+            width: 60px;
+            margin: 0 5px;
+            padding: 5px;
+            text-align: center;
+        }
+
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 14px;
+            box-shadow: var(--shadow);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+        }
+
+        .history-table th, .history-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .history-table th {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 500;
+        }
+
+        .history-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .history-table tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .history-table .btn-sm {
+            padding: 5px 10px;
+            font-size: 13px;
+            min-width: auto;
+        }
+
+        .search-box {
+            display: flex;
+            margin-bottom: 20px;
+            gap: 10px;
+        }
+
+        .search-box input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-family: inherit;
+        }
+
+        .search-box button {
+            min-width: 100px;
+        }
+
+        .doctor-info-sidebar {
+            float: left;
+            width: 280px;
+            margin-right: 30px;
+            padding: 20px;
+            background-color: var(--light-color);
+            border-radius: var(--border-radius);
+            font-size: 14px;
+            line-height: 1.6;
+            box-shadow: var(--shadow);
+        }
+
+        .doctor-info-sidebar h3 {
+            margin-top: 0;
+            color: var(--dark-color);
+            font-size: 18px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .doctor-info-sidebar ul {
+            padding-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        .doctor-info-sidebar li {
+            margin-bottom: 5px;
+        }
+
+        .form-content {
+            overflow: hidden;
+        }
+
+        .clearfix::after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+            margin-left: 5px;
+        }
+
+        .badge-primary {
+            background-color: rgba(52, 152, 219, 0.2);
+            color: var(--primary-color);
+        }
+
+        .badge-success {
+            background-color: rgba(22, 160, 133, 0.2);
+            color: var(--accent-color);
+        }
+
+        .badge-warning {
+            background-color: rgba(243, 156, 18, 0.2);
+            color: var(--warning-color);
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: var(--border-radius);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .alert-info {
+            background-color: rgba(52, 152, 219, 0.1);
+            color: var(--primary-color);
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .alert-success {
+            background-color: rgba(22, 160, 133, 0.1);
+            color: var(--accent-color);
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .floating-buttons {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 100;
+        }
+
+        .floating-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .floating-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+        }
+
+        .floating-btn.print {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .floating-btn.save {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        .floating-btn.back {
+            background-color: var(--warning-color);
+            color: white;
+        }
+@media print {
+    /* General print optimizations */
+    body, .container {
+        font-size: 12px !important;
+        line-height: 1.2 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+   .header {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.header::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 100%;
+    height: 200%;
+    background: rgba(255, 255, 255, 0.1);
+    transform: rotate(30deg);
+}
+
+/* .logo-container {
+    position: absolute;
+    left: 20px;
+    background-color: white;
+    padding: 10px;
+    border-radius: 10px;
+    z-index: 2;
+} */
+
+.logo {
+    height: 100px;  /* Increase this for larger logo */
+    width: auto;
+    display: block;
+    background-color: white;
+}
+
+
+.header-content {
+    z-index: 1;
+    text-align: center;
+    flex-grow: 1;
+}
+
+.header h1 {
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.pan-no {
+    font-size: 14px;
+    opacity: 0.9;
+}
+    
+    /* Header adjustments */
+    .report-header h2 {
+        font-size: 16px !important;
+        margin-bottom: 2px !important;
+    }
+    .subtitle {
+    background-color: black !important;
+    color: white !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+}
+
+    
+    /* Patient information rows */
+    .report-details {
+        margin-bottom: 5px !important;
+        display: flex !important;
+        justify-content: space-between !important;
+    }
+    
+    .report-details div {
+        min-width: 45% !important;
+        margin-bottom: 2px !important;
+    }
+
+    
+    /* Section styling */
+    .print-section-header {
+        font-size: 13px !important;
+        margin: 8px 0 4px 0 !important;
+        padding: 2px 5px !important;
+        font-weight: bold;
+        text-decoration: underline;
+    }
+    
+    .print-sub-section {
+        font-weight: bold;
+        margin: 5px 0 2px 0 !important;
+        font-size: 12px !important;
+    }
+    
+    .print-finding-line {
+        margin-bottom: 1px !important;
+        display: flex !important;
+    }
+    
+    .print-finding-label {
+        min-width: 120px;
+    }
+    
+    /* Conclusion spacing */
+    .report-content p {
+        margin: 5px 0 !important;
+    }
+    
+    /* Footer adjustments */
+    .report-footer {
+        margin-top: 15px !important;
+    }
+    
+    .signature {
+        margin-top: 20px !important;
+    }
+    
+    /* Layout adjustments */
+    .print-layout {
+        display: flex;
+        width: 100%;
+    }
+    
+    .print-doctor-info {
+        width: 30%;
+        padding-right: 10px;
+        font-size: 10px !important;
+        line-height: 3 !important;
+    }
+    
+    .print-doctor-info h3 {
+        font-size: 11px !important;
+        margin-bottom: 5px !important;
+    }
+    
+    .print-doctor-info ul {
+        padding-left: 15px !important;
+        margin-bottom: 5px !important;
+    }
+    
+    .print-doctor-info li {
+        margin-bottom: 2px !important;
+    }
+    
+    .print-report-content {
+        width: 70%;
+    }
+    
+    /* Remove unnecessary spacing */
+    .report {
+        padding: 5px !important;
+    }
+    
+    .report::before {
+        height: 2px !important;
+    }
+    .logo{
+
+    }
+}
+        /* Print-specific styles */
+        @media print {
+            .no-print, .nav-tabs, .floating-buttons {
+                display: none !important;
+            }
+ /* .subtitle{
+        background-color: black;
+        color: white;} */
+
+            body, .container {
+                 
+                padding: 0;
+                margin: 0;
+            }
+
+            .report {
+                border: none;
+                padding: 0;
+                font-size: 14px;
+                line-height: 1.4;
+            }
+
+            .report::before {
+                height: 3px;
+            }
+            
+            /* Ensure report fits on A4 paper */
+            @page {
+                size: A4;
+                margin: 10mm;
+            }
+            
+            body {
+                width: 210mm;
+                height: 297mm;
+            }
+
+            /* Black and white for printing */
+             * {
+                color: black !important;
+                background-color: white !important;
+             }  
+            
+            .report-header h2 {
+                color: black !important;
+            }
+            
+            .section-title {
+                color: black !important;
+                border-bottom-color: #ddd !important;
+            }
+            
+            /* Print layout with doctor info on left */
+            .print-layout {
+                display: flex;
+                width: 100%;
+            }
+            
+            .print-doctor-info {
+                width: 30%;
+                padding-right: 15px;
+                border-right: 1px solid #ddd;
+                margin-right: 15px;
+            }
+            
+            .print-report-content {
+                width: 70%;
+            }
+            
+            /* Section headers for print */
+            
+            
+            .print-sub-section {
+                font-weight: bold;
+                text-decoration: underline;
+                margin: 10px 0 5px 0;
+            }
+            
+            .print-finding-line {
+                display: flex;
+                margin-bottom: 3px;
+            }
+            
+            .print-finding-label {
+                font-weight: bold;
+                margin-right: 5px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .form-row label {
+                width: 100%;
+                margin-bottom: 5px;
+            }
+
+            .form-row input, .form-row select, .form-row textarea {
+                min-width: 100%;
+            }
+
+            .doctor-info-sidebar {
+                float: none;
+                width: 100%;
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            button {
+                width: 100%;
+            }
+
+            .report-details div {
+                width: 100%;
+            }
+        }
+        .logo{
+
+        }
+        
+        /* Required field indicator */
+        .required-field::after {
+            content: " *";
+            color: var(--danger-color);
+        }
+        
+        /* Error message styling */
+        .error-message {
+            color: var(--danger-color);
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .has-error input, .has-error select, .has-error textarea {
+            border-color: var(--danger-color) !important;
+        }
+        
+        .has-error .error-message {
+            display: block;
+        }
+        @media (max-width: 768px) {
+    .container {
+        margin: 10px;
+        box-shadow: none;
+        border-radius: 0;
+    }
+
+    .header {
+        flex-direction: column;
+        text-align: center;
+        padding: 15px;
+    }
+
+    .header img {
+        height: 40px;
+        margin-bottom: 10px;
+    }
+
+    .header h1 {
+        font-size: 20px;
+    }
+
+    .nav-tabs {
+        flex-direction: column;
+    }
+
+    .nav-tab {
+        width: 100%;
+        text-align: center;
+        border-right: none;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .form-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .form-row label {
+        width: 100%;
+        margin-bottom: 5px;
+    }
+
+    .form-row input,
+    .form-row select,
+    .form-row textarea {
+        width: 100%;
+        min-width: auto;
+    }
+
+    .button-group {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    button {
+        width: 100%;
+    }
+
+    .doctor-info-sidebar {
+        width: 100%;
+        float: none;
+        margin: 0 0 20px 0;
+    }
+
+    .report-details {
+        flex-direction: column;
+    }
+
+    .report-details div {
+        min-width: auto;
+        width: 100%;
+    }
+
+    .floating-buttons {
+        bottom: 15px;
+        right: 15px;
+        gap: 8px;
+    }
+
+    .search-box {
+        flex-direction: column;
+    }
+
+    .search-box button {
+        width: 100%;
+    }
+
+    .history-table th,
+    .history-table td {
+        font-size: 12px;
+        padding: 8px;
+    }
+
+    .report-header h2 {
+        font-size: 18px;
+    }
+
+    .section-title {
+        font-size: 18px;
+    }
+
+    .sub-section-title {
+        font-size: 15px;
+    }
+}
+
+    </style>
+</head>
+<body>
+   <div class="header">
+    <div class="logo-container">
+        <img src=".\Screenshot_2025-05-26_162414-removebg-preview.png" alt="Logo" class="logo">
+    </div>
+
+    <div class="header-content">
+        <h1>आजाद फार्मेसी</h1>
+        <div class="pan-no">PAN No. 607818460 | DDA Regd No Ra.pa-3750121032410</div>
+    </div>
+</div>
+
+</div>
+
+
+        <div class="nav-tabs">
+            <div class="nav-tab active" data-tab="form"><i class="fas fa-file-alt"></i> Report Form</div>
+            <div class="nav-tab" data-tab="history"><i class="fas fa-history"></i> Patient History</div>
+            <div class="nav-tab" data-tab="report" style="display:none;"><i class="fas fa-file-medical"></i> Generated Report</div>
+        </div>
+
+        <!-- Form Tab -->
+        <div id="form-tab" class="tab-content active">
+            <div class="form-section">
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i>
+                    <div>Fill out the patient details and ultrasound findings to generate a comprehensive report.</div>
+                </div>
+
+                <div class="section-title">
+                    <i class="fas fa-user-md"></i> Doctor Information
+                </div>
+                <div class="form-row">
+                    <label for="doctorName">Doctor Name:</label>
+                    <input type="text" id="doctorName" value="Dr. Kuresh Ajad" readonly>
+                </div>
+                <div class="form-row">
+                    <label for="doctorQualification">Qualification:</label>
+                    <input type="text" id="doctorQualification" value="MBBS, M.PHIL (Pakistan)" readonly>
+                </div>
+                <div class="form-row">
+                    <label for="doctorRegNo">Registration No:</label>
+                    <input type="text" id="doctorRegNo" value="NMC R.No. 9005" readonly>
+                </div>
+
+                <div class="section-title">
+                    <i class="fas fa-procedures"></i> Patient Information
+                </div>
+                <div class="form-row">
+                    <label for="patientId" class="required-field">Patient ID:</label>
+                    <input type="text" id="patientId" placeholder="Auto-generated" readonly>
+                    <div class="error-message" id="patientId-error">Patient ID is required</div>
+                </div>
+                <div class="form-row">
+                    <label for="patientName" class="required-field">Full Name:</label>
+                    <input type="text" id="patientName" placeholder="Enter patient name" value="">
+                    <div class="error-message" id="patientName-error">Patient name is required</div>
+                </div>
+                <div class="form-row">
+                    <label for="patientAddress">Address:</label>
+                    <input type="text" id="patientAddress" placeholder="Enter patient address">
+                </div>
+                <div class="form-row">
+                    <label for="patientContact">Contact:</label>
+                    <input type="text" id="patientContact" placeholder="Enter contact number">
+                </div>
+                <div class="form-row">
+                    <label for="ageSex" class="required-field">Age/Sex:</label>
+                    <input type="text" id="ageSex" placeholder="e.g., 35/M or 28/F">
+                    <div class="error-message" id="ageSex-error">Age/Sex is required (format: 35/M or 28/F)</div>
+                </div>
+                <div class="form-row">
+                    <label for="refBy">Ref. by:</label>
+                    <input type="text" id="refBy" placeholder="Referring doctor">
+                </div>
+                <div class="form-row">
+                    <label for="date">Date:</label>
+                    <input type="date" id="date">
+                </div>
+
+                <div class="form-row">
+                    <label class="required-field">Report Type:</label>
+                    <div class="multi-select">
+                        <label><input type="radio" name="reportType" value="general"> <i class="fas fa-liver"></i> General Ultrasound</label>
+                        <label><input type="radio" name="reportType" value="obstetrical" checked> <i class="fas fa-baby"></i> Obstetrical Ultrasound</label>
+                        <label><input type="radio" name="reportType" value="gynecological"> <i class="fas fa-female"></i> Gynecological Ultrasound</label>
+                    </div>
+                    <div class="error-message" id="reportType-error">Report type is required</div>
+                </div>
+
+                <!-- General Ultrasound Section -->
+                <div id="generalUltrasoundSection" style="display: none;">
+                    <div class="section-title">General Ultrasound Findings</div>
+                    <div class="sub-section-title">LIVER</div>
+                    <div class="form-row">
+                        <label>Size:</label>
+                        <div class="multi-select">
+                            <label><input type="radio" name="liverSize" value="Normal" checked> Normal</label>
+                            <label><input type="radio" name="liverSize" value="Enlarged"> Enlarged</label>
+                            <label><input type="radio" name="liverSize" value="Shrunken"> Shrunken</label>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <label>Shape:</label>
+                        <div class="multi-select">
+                            <label><input type="radio" name="liverShape" value="Coarse" checked> Coarse</label>
+                            <label><input type="radio" name="liverShape" value="Normal"> Normal</label>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <label>Parenchyma:</label>
+                        <div class="multi-select">
+                            <label><input type="radio" name="liverParenchyma" value="Normal" checked> Normal</label>
+                            <label><input type="radio" name="liverParenchyma" value="Echogenic"> Echogenic</label>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <label>Focal Mass Lesion:</label>
+                        <div class="multi-select">
+                            <label><input type="radio" name="liverLesion" value="None" checked> None</label>
+                            <label><input type="radio" name="liverLesion" value="Single"> Single</label>
+                            <label><input type="radio" name="liverLesion" value="Multiple"> Multiple</label>
+                        </div>
+                    </div>
+                    <div class="sub-section-title">GALL BLADDER</div>
+                    <div class="form-row">
+                        <label>Status:</label>
+                        <div class="multi-select">
+                            <label><input type="radio" name="gallBladderStatus" value="Normal" checked> Normal</label>
+                            <label><input type="radio" name="gallBladderStatus" value="Post Meal"> Post Meal</label>
+                            <label><input type="radio" name="gallBladderStatus" value="Enlarged"> Enlarged</label>
+                            <label><input type="radio" name="gallBladderStatus" value="Removed"> Removed</label>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <label>Findings:</label>
+                        <div class="multi-select">
+                            <label><input type="checkbox" name="gallBladderFindings" value="Calculi"> Calculi</label>
+                            <label><input type="checkbox" name="gallBladderFindings" value="Polyp"> Polyp</label>
+                            <label><input type="checkbox" name="gallBladderFindings" value="Sludge"> Sludge</label>
+                            <label><input type="checkbox" name="gallBladderFindings" value="Mass"> Mass</label>
+                            <label><input type="checkbox" name="gallBladderFindings" value="Cholecystitis"> Cholecystitis</label>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <label>Wall Thickness:</label>
+                        <input type="text" name="gallBladderWallThickness" placeholder="e.g., 2 mm">
+                    </div>
+                    <div class="sub-section-title">PANCREAS</div>
+                    <div class="form-row">
+                        <label>Size:</label>
+                        <input type="text" name="pancreasSize" placeholder="e.g., 15 mm">
+                    </div>
+                    <div class="form-row">
+                        <label>CBD Size:</label>
+                        <div class="multi-select">
+                            <label><input type="radio" name="cbdSize" value="Normal" checked> Normal</label>
+                            <label><input type="radio" name="cbdSize" value="Dilated"> Dilated</label>
+                        </div>
+                        <input type="text" name="cbdStone" placeholder="Stone size, e.g., 5 mm">
+                    </div>
+                    <div class="sub-section-title">SPLEEN</div>
+                    <div class="form-row">
+                        <label>Size:</label>
+                        <div class="multi-select">
+                            <label><input type="radio" name="spleenSize" value="Normal" checked> Normal</label>
+                            <label><input type="radio" name="spleenSize" value="Enlarged"> Enlarged</label>
+                        </div>
+                    </div>
+                    <div class="sub-section-title">RIGHT KIDNEY</div>
+                    <div class="form-row">
+                        <label>Size:</label>
+                        <div class="multi-select">
+                            <label><input type="radio" name="rightKidneySize" value="Normal" checked> Normal</label>
+                            <label><input type="radio" name="rightKidneySize" value="Enlarged"> Enlarged</label>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <label>Findings:</label>
+                        <div class="multi-select">
+                            <label><input type="checkbox" name="rightKidneyFindings" value="Stone"> Stone</label>
+                            <label><input type="checkbox" name="rightKidneyFindings" value="Mass"> Mass</label>
+                            <label><input type="checkbox" name="rightKidneyFindings" value="Cyst"> Cyst</label>
+                        </div>
+                    </div>
+                    <div class="sub-section-title">LEFT KIDNEY</div>
+                    <div class="form-row">
+                        <label>Size:</label>
+                        <div class="multi-select">
+                            <label><input type="radio" name="leftKidneySize" value="Normal" checked> Normal</label>
+                            <label><input type="radio" name="leftKidneySize" value="Enlarged"> Enlarged</label>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <label>Findings:</label>
+                        <div class="multi-select">
+                            <label><input type="checkbox" name="leftKidneyFindings" value="Stone"> Stone</label>
+                            <label><input type="checkbox" name="leftKidneyFindings" value="Mass"> Mass</label>
+                            <label><input type="checkbox" name="leftKidneyFindings" value="Cyst"> Cyst</label>
+                        </div>
+                    </div>
+                    <div class="sub-section-title">URINARY BLADDER</div>
+                    <div class="form-row">
+                        <label>Status:</label>
+                        <div class="multi-select">
+                            <label><input type="radio" name="bladderStatus" value="Full" checked> Full</label>
+                            <label><input type="radio" name="bladderStatus" value="Partially Full"> Partially Full</label>
+                            <label><input type="radio" name="bladderStatus" value="Normal"> Normal</label>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <label>Findings:</label>
+                        <div class="multi-select">
+                            <label><input type="checkbox" name="bladderFindings" value="Stone"> Stone</label>
+                            <label><input type="checkbox" name="bladderFindings" value="Cyst"> Cyst</label>
+                            <label><input type="checkbox" name="bladderFindings" value="Mass"> Mass</label>
+                            <label><input type="checkbox" name="bladderFindings" value="Diverticulum"> Diverticulum</label>
+                        </div>
+                    </div>
+                    <div id="prostateSection">
+                        <div class="sub-section-title">PROSTATE</div>
+                        <div class="form-row">
+                            <label>Size:</label>
+                            <div class="multi-select">
+                                <label><input type="radio" name="prostateSize" value="Normal" checked> Normal</label>
+                                <label><input type="radio" name="prostateSize" value="Enlarged"> Enlarged</label>
+                            </div>
+                            <input type="text" name="prostateVolume" placeholder="Volume, e.g., 25 cc">
+                        </div>
+                    </div>
+                    
+                    <!-- Female-specific sections -->
+                    <div id="femaleSections" style="display: none;">
+                        <div class="sub-section-title">UTERUS</div>
+                        <div class="form-row">
+                            <label>Size:</label>
+                            <div class="multi-select">
+                                <label><input type="radio" name="uterusSize" value="Normal" checked> Normal</label>
+                                <label><input type="radio" name="uterusSize" value="Enlarged"> Enlarged</label>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <label>Position:</label>
+                            <div class="multi-select">
+                                <label><input type="radio" name="uterusPosition" value="Anteverted and Anteflexed" checked> Anteverted and Anteflexed</label>
+                                <label><input type="radio" name="uterusPosition" value="Retroverted and Retroflexed"> Retroverted and Retroflexed</label>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <label>Fibroid:</label>
+                            <div class="multi-select">
+                                <label><input type="checkbox" name="uterusFibroid" value="Fibroid"> Fibroid</label>
+                            </div>
+                        </div>
+                        <div class="sub-section-title">ENDOMETRIUM</div>
+                        <div class="form-row">
+                            <label>Status:</label>
+                            <div class="multi-select">
+                                <label><input type="radio" name="endometriumStatus" value="Normal" checked> Normal</label>
+                                <label><input type="radio" name="endometriumStatus" value="Enlarged"> Enlarged</label>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <label>Fluid:</label>
+                            <input type="text" name="endometriumFluid" placeholder="e.g., No fluid">
+                        </div>
+                        <div class="sub-section-title">POUCH OF DOUGLAS</div>
+                        <div class="form-row">
+                            <label>Status:</label>
+                            <div class="multi-select">
+                                <label><input type="radio" name="pouchStatus" value="Clear" checked> Clear</label>
+                                <label><input type="radio" name="pouchStatus" value="Fluid"> Fluid</label>
+                            </div>
+                        </div>
+                        <div class="sub-section-title">OVARIES</div>
+                        <div class="form-row">
+                            <label>Right Ovary:</label>
+                            <div class="multi-select">
+                                <label><input type="radio" name="rightOvarySize" value="Normal" checked> Normal</label>
+                                <label><input type="radio" name="rightOvarySize" value="Abnormal"> Abnormal</label>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <label>Right Ovary Findings:</label>
+                            <div class="multi-select">
+                                <label><input type="checkbox" name="rightOvaryFindings" value="Follicle"> Follicle</label>
+                                <label><input type="checkbox" name="rightOvaryFindings" value="Cyst"> Cyst</label>
+                                <label><input type="checkbox" name="rightOvaryFindings" value="Mass"> Mass</label>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <label>Left Ovary:</label>
+                            <div class="multi-select">
+                                <label><input type="radio" name="leftOvarySize" value="Normal" checked> Normal</label>
+                                <label><input type="radio" name="leftOvarySize" value="Abnormal"> Abnormal</label>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <label>Left Ovary Findings:</label>
+                            <div class="multi-select">
+                                <label><input type="checkbox" name="leftOvaryFindings" value="Follicle"> Follicle</label>
+                                <label><input type="checkbox" name="leftOvaryFindings" value="Cyst"> Cyst</label>
+                                <label><input type="checkbox" name="leftOvaryFindings" value="Mass"> Mass</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Obstetrical Ultrasound Section -->
+                <div id="obstetricalUltrasoundSection" class="clearfix">
+                    <div class="doctor-info-sidebar">
+                        <h3>आजाद फार्मेसी</h3>
+                        <p><strong>डा. कुरेश आजाद</strong><br>
+                        MBBS, M.PHIL (Pakistan)<br>
+                        NMC R.No. 9005<br>
+                        फेमिली फिजिसियन तथा सोनोलोजिस्ट</p>
+                        <h3>सुविधाहरु :-</h3>
+                        <ul>
+                            <li>Pharmacy (औषधि)</li>
+                            <li>USG (भिडियो एक्सरे)</li>
+                            <li>ECG (मुटु परिक्षण)</li>
+                            <li>Lab (रगत परिक्षण)</li>
+                            <li>Otoscope (कान परिक्षण)</li>
+                            <li>Fundoscope (आँखा जाँच)</li>
+                        </ul>
+                        <p>फेमिली फिजिसियन अर्थात पारिवारिक चिकित्सक द्वारा परिवारमित्र महिला र पुरुषमा बच्चा देखी वृद्ध सम्ममा आइपर्ने सामान्य शारीरिक तथा मानसिक समस्याहरुलाई आवश्यकतानुसार माथि उल्लेखित उपकरणहरु द्वारा परिक्षण गरि सजिलो र सुलभ माध्यममा उपचार गरिन्छ।</p>
+                        <p>यदि समस्यामा जटिलता देखिएमा वा यस संस्थाबाट उपचार सम्भव नभएमा उचित संस्था र स्थानको लागि परामर्श दिई चिकित्सकीय जिम्मेवारी वहन गरिन्छ।</p>
+                        <p>हाम्रो जिम्मेवारी र तपाईंको समझदारीबाट नै समस्यामाथि जित हुनेछ। बिहान ८ बजे देखि बेलुका ७ बजेसम्म।</p>
+                    </div>
+
+                    <div class="form-content">
+                        <div class="section-title">OBSTETRICAL ULTRASOUND REPORT</div>
+                        <div class="sub-section-title">GESTATION</div>
+                        <div class="form-row">
+                            <label>Type:</label>
+                            <div class="multi-select">
+                                <label><input type="radio" name="gestationType" value="Single" checked> Single</label>
+                                <label><input type="radio" name="gestationType" value="Twins"> Twins</label>
+                                <label><input type="radio" name="gestationType" value="Multiple"> Multiple</label>
+                            </div>
+                        </div>
+                        <div class="sub-section-title">GESTATIONAL SAC</div>
+                        <div class="form-row">
+                            <label>Mean Sac Diameter:</label>
+                            <input type="text" name="meanSacDiameter" placeholder="e.g., 20 mm">
+                        </div>
+                        <div class="form-row">
+                            <label>Contour:</label>
+                            <div class="multi-select">
+                                <label><input type="radio" name="sacContour" value="Regular" checked> Regular</label>
+                                <label><input type="radio" name="sacContour" value="Irregular"> Irregular</label>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <label>Decidual Reaction:</label>
+                            <div class="multi-select">
+                                <label><input type="radio" name="decidualReaction" value="Uniform" checked> Uniform</label>
+                                <label><input type="radio" name="decidualReaction" value="Weak"> Weak</label>
+                            </div>
+                        </div>
+                        <div class="sub-section-title">EMBRYO</div>
+                        <div class="form-row">
+                            <label>CRL:</label>
+                            <input type="text" name="crl" placeholder="e.g., 25 mm">
+                        </div>
+                        <div class="form-row">
+                            <label>Cardiac Flicker:</label>
+                            <div class="multi-select">
+                                <label><input type="radio" name="cardiacFlicker" value="Present" checked> Present</label>
+                                <label><input type="radio" name="cardiacFlicker" value="Absent"> Absent</label>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <label>BPD:</label>
+                            <input type="text" name="bpd" placeholder="e.g., 20 mm">
+                        </div>
+                        <div class="form-row">
+                            <label>FL:</label>
+                            <input type="text" name="fl" placeholder="e.g., 15 mm">
+                        </div>
+                        <div class="form-row">
+                            <label>EDD:</label>
+                            <input type="date" name="edd">
+                        </div>
+                        <div class="form-row">
+                            <label>Presentation:</label>
+                            <div class="multi-select">
+                                <label><input type="radio" name="presentation" value="Cephalic" checked> Cephalic</label>
+                                <label><input type="radio" name="presentation" value="Breech"> Breech</label>
+                                <label><input type="radio" name="presentation" value="Shoulder"> Shoulder</label>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <label>Lie:</label>
+                            <div class="multi-select">
+                                <label><input type="radio" name="lie" value="Longitudinal" checked> Longitudinal</label>
+                                <label><input type="radio" name="lie" value="Transverse"> Transverse</label>
+                                <label><input type="radio" name="lie" value="Oblique"> Oblique</label>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <label>Placenta:</label>
+                            <div class="multi-select">
+                                <label><input type="radio" name="placenta" value="Fundal" checked> Fundal</label>
+                                <label><input type="radio" name="placenta" value="Fundo-Anterior"> Fundo-Anterior</label>
+                                <label><input type="radio" name="placenta" value="Fundo-Posterior"> Fundo-Posterior</label>
+                                <label><input type="radio" name="placenta" value="Variants"> Variants</label>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <label>Placental Maturity:</label>
+                            <input type="text" name="placentalMaturity" placeholder="e.g., Grade 0">
+                        </div>
+                        <div class="form-row">
+                            <label>Amniotic Fluid:</label>
+                            <div class="multi-select">
+                                <label><input type="radio" name="amnioticFluid" value="Adequate" checked> Adequate</label>
+                                <label><input type="radio" name="amnioticFluid" value="Less"> Less</label>
+                                <label><input type="radio" name="amnioticFluid" value="More than Adequate"> More than Adequate</label>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <label>AFI:</label>
+                            <input type="text" name="afi" placeholder="e.g., 10 cm">
+                        </div>
+                        <div class="form-row">
+                            <label>Fetal Weight:</label>
+                            <input type="text" name="fetalWeight" placeholder="e.g., 1500 g">
+                        </div>
+                        <div class="form-row">
+                            <label>Heart Beat:</label>
+                            <input type="text" name="heartBeat" placeholder="e.g., 140 bpm">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gynecological Ultrasound Section -->
+                <div id="gynecologicalUltrasoundSection" style="display: none;">
+                    <div class="section-title">GYNECOLOGICAL ULTRASOUND REPORT</div>
+                    <div class="sub-section-title">UTERUS</div>
+                    <div class="form-row">
+                        <label>Size:</label>
+                        <div class="multi-select">
+                            <label><input type="radio" name="uterusSize" value="Normal" checked> Normal</label>
+                            <label><input type="radio" name="uterusSize" value="Enlarged"> Enlarged</label>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <label>Position:</label>
+                        <div class="multi-select">
+                            <label><input type="radio" name="uterusPosition" value="Anteverted and Anteflexed" checked> Anteverted and Anteflexed</label>
+                            <label><input type="radio" name="uterusPosition" value="Retroverted and Retroflexed"> Retroverted and Retroflexed</label>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <label>Fibroid:</label>
+                        <div class="multi-select">
+                            <label><input type="checkbox" name="uterusFibroid" value="Fibroid"> Fibroid</label>
+                        </div>
+                    </div>
+                    <div class="sub-section-title">ENDOMETRIUM</div>
+                    <div class="form-row">
+                        <label>Status:</label>
+                        <div class="multi-select">
+                            <label><input type="radio" name="endometriumStatus" value="Normal" checked> Normal</label>
+                            <label><input type="radio" name="endometriumStatus" value="Enlarged"> Enlarged</label>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <label>Fluid:</label>
+                        <input type="text" name="endometriumFluid" placeholder="e.g., No fluid">
+                    </div>
+                    <div class="sub-section-title">POUCH OF DOUGLAS</div>
+                    <div class="form-row">
+                        <label>Status:</label>
+                        <div class="multi-select">
+                            <label><input type="radio" name="pouchStatus" value="Clear" checked> Clear</label>
+                            <label><input type="radio" name="pouchStatus" value="Fluid"> Fluid</label>
+                        </div>
+                    </div>
+                    <div class="sub-section-title">OVARIES</div>
+                    <div class="form-row">
+                        <label>Right Ovary:</label>
+                        <div class="multi-select">
+                            <label><input type="radio" name="rightOvarySize" value="Normal" checked> Normal</label>
+                            <label><input type="radio" name="rightOvarySize" value="Abnormal"> Abnormal</label>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <label>Right Ovary Findings:</label>
+                        <div class="multi-select">
+                            <label><input type="checkbox" name="rightOvaryFindings" value="Follicle"> Follicle</label>
+                            <label><input type="checkbox" name="rightOvaryFindings" value="Cyst"> Cyst</label>
+                            <label><input type="checkbox" name="rightOvaryFindings" value="Mass"> Mass</label>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <label>Left Ovary:</label>
+                        <div class="multi-select">
+                            <label><input type="radio" name="leftOvarySize" value="Normal" checked> Normal</label>
+                            <label><input type="radio" name="leftOvarySize" value="Abnormal"> Abnormal</label>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <label>Left Ovary Findings:</label>
+                        <div class="multi-select">
+                            <label><input type="checkbox" name="leftOvaryFindings" value="Follicle"> Follicle</label>
+                            <label><input type="checkbox" name="leftOvaryFindings" value="Cyst"> Cyst</label>
+                            <label><input type="checkbox" name="leftOvaryFindings" value="Mass"> Mass</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <label>Conclusion:</label>
+                    <textarea name="conclusion" placeholder="Enter conclusion"></textarea>
+                </div>
+
+                <div class="button-group no-print">
+                    <button id="generateReport" class="btn-primary">
+                        <i class="fas fa-file-medical"></i> Generate Report
+                    </button>
+                    <button class="btn-warning" id="showHistory">
+                        <i class="fas fa-history"></i> View History
+                    </button>
+                    <button class="btn-outline" id="clearForm">
+                        <i class="fas fa-broom"></i> Clear Form
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- History Tab -->
+        <div id="history-tab" class="tab-content">
+            <div class="history-section">
+                <div class="section-title">
+                    <i class="fas fa-history"></i> Patient History
+                </div>
+                <div class="search-box">
+                    <input type="text" id="searchPatient" placeholder="Search by patient name or ID...">
+                    <button id="searchButton" class="btn-primary">
+                        <i class="fas fa-search"></i> Search
+                    </button>
+                </div>
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i>
+                    <div>Click on any report to view details. You can print or regenerate reports from history.</div>
+                </div>
+                <table class="history-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Patient ID</th>
+                            <th>Name</th>
+                            <th>Age/Sex</th>
+                            <th>Contact</th>
+                            <th>Report Type</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historyTableBody"></tbody>
+                </table>
+                <div class="button-group no-print">
+                    <button id="backToForm" class="btn-primary">
+                        <i class="fas fa-arrow-left"></i> Back to Form
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Report Tab -->
+        <div id="report-tab" class="tab-content">
+            <div class="report-section">
+                
+                
+                <div class="report" id="report"></div>
+                <div class="button-group no-print">
+                    <button class="btn-success" id="printReport">
+                        <i class="fas fa-print"></i> Print Report
+                    </button>
+                    <button id="saveReport" class="btn-primary">
+                        <i class="fas fa-save"></i> Save to Database
+                    </button>
+                    <button id="backToFormFromReport" class="btn-warning">
+                        <i class="fas fa-edit"></i> Edit Report
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Action Buttons -->
+    <div class="floating-buttons no-print" style="display: none;">
+        <div class="floating-btn print" title="Print Report">
+            <i class="fas fa-print"></i>
+        </div>
+        <div class="floating-btn save" title="Save Report">
+            <i class="fas fa-save"></i>
+        </div>
+        <div class="floating-btn back" title="Back to Form">
+            <i class="fas fa-arrow-left"></i>
+        </div>
+    </div>
+
+    <script>
+        // Database simulation with localStorage
+const database = {
+    reports: JSON.parse(localStorage.getItem('usgReports')) || [],
+    patients: JSON.parse(localStorage.getItem('usgPatients')) || [],
+    saveReports: function() {
+        localStorage.setItem('usgReports', JSON.stringify(this.reports));
+    },
+    savePatients: function() {
+        localStorage.setItem('usgPatients', JSON.stringify(this.patients));
+    },
+    addReport: function(report) {
+        this.reports.unshift(report);
+        this.saveReports();
+        if (!this.patients.some(p => p.id === report.patientId)) {
+            this.patients.push({
+                id: report.patientId,
+                name: report.patientName,
+                ageSex: report.ageSex,
+                address: report.address || '',
+                contact: report.contact || ''
+            });
+            this.savePatients();
+        }
+    },
+    searchReports: function(searchTerm) {
+        if (!searchTerm) return this.reports;
+        const term = searchTerm.toLowerCase();
+        return this.reports.filter(r => 
+            r.patientName.toLowerCase().includes(term) || 
+            r.patientId.toLowerCase().includes(term));
+    },
+    getReport: function(id) {
+        return this.reports.find(r => r.id === id);
+    }
+};
+
+// DOM elements
+const generalUltrasoundSection = document.getElementById('generalUltrasoundSection');
+const obstetricalUltrasoundSection = document.getElementById('obstetricalUltrasoundSection');
+const gynecologicalUltrasoundSection = document.getElementById('gynecologicalUltrasoundSection');
+const reportTypeRadios = document.querySelectorAll('input[name="reportType"]');
+const historySection = document.getElementById('history-tab');
+const reportSection = document.getElementById('report-tab');
+const formSection = document.getElementById('form-tab');
+const showHistoryButton = document.getElementById('showHistory');
+const backToFormButton = document.getElementById('backToForm');
+const backToFormFromReportButton = document.getElementById('backToFormFromReport');
+const saveReportButton = document.getElementById('saveReport');
+const searchPatientInput = document.getElementById('searchPatient');
+const searchButton = document.getElementById('searchButton');
+const historyTableBody = document.getElementById('historyTableBody');
+const clearFormButton = document.getElementById('clearForm');
+const printButton = document.getElementById('printReport');
+const floatingButtons = document.querySelector('.floating-buttons');
+const floatingPrint = floatingButtons.querySelector('.print');
+const floatingSave = floatingButtons.querySelector('.save');
+const floatingBack = floatingButtons.querySelector('.back');
+const navTabs = document.querySelectorAll('.nav-tab');
+const prostateSection = document.getElementById('prostateSection');
+const femaleSections = document.getElementById('femaleSections');
+const ageSexInput = document.getElementById('ageSex');
+
+// Set today's date as default and generate patient ID
+document.addEventListener('DOMContentLoaded', function() {
+    const today = new Date().toISOString().substr(0, 10);
+    document.getElementById('date').value = today;
+    
+    // Generate patient ID
+    generatePatientId();
+    
+    if (database.reports.length === 0) {
+        loadSampleData();
+    }
+    setupTabs();
+    setupReportTypeSwitching();
+    
+    // Listen for age/sex changes to update form sections
+    ageSexInput.addEventListener('change', updateFormSectionsBasedOnSex);
+});
+
+// Generate a new patient ID
+function generatePatientId() {
+    const now = new Date();
+    const year = now.getFullYear().toString().slice(-2);
+    const month = (now.getMonth() + 1).toString().padStart(2, '0');
+    const day = now.getDate().toString().padStart(2, '0');
+    const randomNum = Math.floor(Math.random() * 900) + 100;
+    const patientId = `PID-${year}${month}${day}-${randomNum}`;
+    document.getElementById('patientId').value = patientId;
+}
+
+// Update form sections based on patient sex
+function updateFormSectionsBasedOnSex() {
+    const ageSex = ageSexInput.value.trim().toUpperCase();
+    const isFemale = ageSex.endsWith('/F');
+    
+    if (isFemale) {
+        // Show female-specific sections in general ultrasound
+        femaleSections.style.display = 'block';
+        prostateSection.style.display = 'none';
+        
+        // Enable obstetrical and gynecological options
+        document.querySelector('input[value="obstetrical"]').disabled = false;
+        document.querySelector('input[value="gynecological"]').disabled = false;
+    } else {
+        // Hide female-specific sections in general ultrasound
+        femaleSections.style.display = 'none';
+        prostateSection.style.display = 'block';
+        
+        // Disable obstetrical and gynecological options if male
+        if (ageSex.endsWith('/M')) {
+            document.querySelector('input[value="obstetrical"]').disabled = true;
+            document.querySelector('input[value="gynecological"]').disabled = true;
+            
+            // Switch to general if obstetrical or gynecological was selected
+            const selectedType = document.querySelector('input[name="reportType"]:checked').value;
+            if (selectedType === 'obstetrical' || selectedType === 'gynecological') {
+                document.querySelector('input[value="general"]').checked = true;
+                document.querySelector('input[value="general"]').dispatchEvent(new Event('change'));
+            }
+        }
+    }
+}
+
+// Tab navigation
+function setupTabs() {
+    navTabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            navTabs.forEach(t => t.classList.remove('active'));
+            const tabId = this.getAttribute('data-tab');
+            document.getElementById(`${tabId}-tab`).classList.add('active');
+            this.classList.add('active');
+            floatingButtons.style.display = tabId === 'report' ? 'flex' : 'none';
+        });
+    });
+}
+
+// Report type switching
+function setupReportTypeSwitching() {
+    reportTypeRadios.forEach(radio => {
+        radio.addEventListener('change', function() {
+            generalUltrasoundSection.style.display = this.value === 'general' ? 'block' : 'none';
+            obstetricalUltrasoundSection.style.display = this.value === 'obstetrical' ? 'block' : 'none';
+            gynecologicalUltrasoundSection.style.display = this.value === 'gynecological' ? 'block' : 'none';
+        });
+    });
+}
+
+// Validate form fields
+function validateForm() {
+    let isValid = true;
+    
+    // Clear previous errors
+    document.querySelectorAll('.form-row').forEach(row => {
+        row.classList.remove('has-error');
+    });
+    
+    // Validate required fields
+    const requiredFields = [
+        { id: 'patientId', errorId: 'patientId-error' },
+        { id: 'patientName', errorId: 'patientName-error' },
+        { id: 'ageSex', errorId: 'ageSex-error' }
+    ];
+    
+    requiredFields.forEach(field => {
+        const input = document.getElementById(field.id);
+        const errorElement = document.getElementById(field.errorId);
+        const parentRow = input.closest('.form-row');
+        
+        if (!input.value.trim()) {
+            parentRow.classList.add('has-error');
+            errorElement.textContent = `${field.id === 'ageSex' ? 'Age/Sex' : field.id.replace('patient', 'Patient ')} is required`;
+            isValid = false;
+        } else if (field.id === 'ageSex') {
+            // Validate age/sex format (e.g., 35/M or 28/F)
+            const ageSexRegex = /^\d+\/(M|F)$/i;
+            if (!ageSexRegex.test(input.value.trim())) {
+                parentRow.classList.add('has-error');
+                errorElement.textContent = 'Please enter Age/Sex in format: 35/M or 28/F';
+                isValid = false;
+            }
+        }
+    });
+    
+    return isValid;
+}
+
+// Event listeners
+showHistoryButton.addEventListener('click', function() {
+    document.querySelector('.nav-tab[data-tab="history"]').click();
+    updateHistoryTable();
+});
+
+backToFormButton.addEventListener('click', function() {
+    document.querySelector('.nav-tab[data-tab="form"]').click();
+});
+
+backToFormFromReportButton.addEventListener('click', function() {
+    document.querySelector('.nav-tab[data-tab="form"]').click();
+});
+
+floatingPrint.addEventListener('click', function() {
+    window.print();
+});
+
+floatingSave.addEventListener('click', saveReport);
+
+floatingBack.addEventListener('click', function() {
+    document.querySelector('.nav-tab[data-tab="form"]').click();
+});
+
+searchButton.addEventListener('click', function() {
+    updateHistoryTable(searchPatientInput.value);
+});
+
+searchPatientInput.addEventListener('keyup', function(e) {
+    if (e.key === 'Enter') {
+        updateHistoryTable(this.value);
+    }
+});
+
+clearFormButton.addEventListener('click', function() {
+    if (confirm('Are you sure you want to clear the form? All unsaved data will be lost.')) {
+        document.querySelector('form').reset();
+        generatePatientId();
+        document.getElementById('date').value = new Date().toISOString().substr(0, 10);
+        document.getElementById('patientName').focus();
+    }
+});
+
+printButton.addEventListener('click', function() {
+    window.print();
+});
+
+saveReportButton.addEventListener('click', saveReport);
+
+// Generate report
+document.getElementById('generateReport').addEventListener('click', function() {
+    if (!validateForm()) {
+        return;
+    }
+    
+    const reportType = document.querySelector('input[name="reportType"]:checked').value;
+    const patientName = document.getElementById('patientName').value;
+    const ageSex = document.getElementById('ageSex').value;
+
+    const patientId = document.getElementById('patientId').value || 'N/A';
+    const patientAddress = document.getElementById('patientAddress').value || 'Not provided';
+    const patientContact = document.getElementById('patientContact').value || 'Not provided';
+    const refBy = document.getElementById('refBy').value || 'Self';
+    const date = document.getElementById('date').value;
+    const formattedDate = date ? new Date(date).toLocaleDateString() : 'Not specified';
+
+    let reportHTML = '';
+    if (reportType === 'general') {
+        reportHTML = generateGeneralReport(patientName, patientAddress, patientContact, ageSex, refBy, formattedDate);
+    } else if (reportType === 'obstetrical') {
+        reportHTML = generateObstetricalReport(patientName, patientAddress, patientContact, ageSex, refBy, formattedDate);
+    } else if (reportType === 'gynecological') {
+        reportHTML = generateGynecologicalReport(patientName, patientAddress, patientContact, ageSex, refBy, formattedDate);
+    }
+
+    document.getElementById('report').innerHTML = reportHTML;
+    document.querySelector('.nav-tab[data-tab="report"]').click();
+    window.scrollTo(0, 0);
+});
+
+function saveReport() {
+    const reportType = document.querySelector('input[name="reportType"]:checked').value;
+    const patientId = document.getElementById('patientId').value;
+    const patientName = document.getElementById('patientName').value;
+    const ageSex = document.getElementById('ageSex').value;
+    const date = document.getElementById('date').value;
+
+    if (!patientName) {
+        alert('Patient name is required to save report');
+        return;
+    }
+
+    const report = {
+        id: `RPT-${Date.now()}`,
+        patientId,
+        patientName,
+        ageSex,
+        address: document.getElementById('patientAddress').value,
+        contact: document.getElementById('patientContact').value,
+        date: date || new Date().toISOString().split('T')[0],
+        type: reportType,
+        content: document.getElementById('report').innerHTML
+    };
+
+    database.addReport(report);
+    showAlert('Report saved successfully!', 'success');
+    updateHistoryTable();
+}
+
+function showAlert(message, type = 'info') {
+    const alertBox = document.createElement('div');
+    alertBox.className = `alert alert-${type}`;
+    alertBox.innerHTML = `
+        <i class="fas fa-${type === 'success' ? 'check-circle' : 'info-circle'}"></i>
+        <div>${message}</div>
+    `;
+    const reportSection = document.querySelector('#report-tab .report-section');
+    reportSection.insertBefore(alertBox, reportSection.firstChild);
+    setTimeout(() => alertBox.remove(), 5000);
+}
+
+function updateHistoryTable(searchTerm = '') {
+    historyTableBody.innerHTML = '';
+    const filteredReports = database.searchReports(searchTerm);
+
+    if (filteredReports.length === 0) {
+        historyTableBody.innerHTML = `
+            <tr>
+                <td colspan="7" style="text-align: center; padding: 30px;">
+                    <i class="fas fa-folder-open" style="font-size: 24px; color: var(--gray-color); margin-bottom: 10px; display: block;"></i>
+                    No reports found
+                </td>
+            </tr>
+        `;
+        return;
+    }
+
+    filteredReports.forEach(report => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${new Date(report.date).toLocaleDateString()}</td>
+            <td>${report.patientId}</td>
+            <td>${report.patientName}</td>
+            <td>${report.ageSex}</td>
+            <td>${report.contact || 'N/A'}</td>
+            <td>
+                ${getReportTypeName(report.type)}
+                <span class="status-badge ${getReportBadgeClass(report.type)}">
+                    ${report.type.charAt(0).toUpperCase() + report.type.slice(1)}
+                </span>
+            </td>
+            <td>
+                <button class="btn-primary btn-sm view-report" data-id="${report.id}">
+                    <i class="fas fa-eye"></i> View
+                </button>
+                <button class="btn-warning btn-sm regenerate-report" data-id="${report.id}" style="margin-left: 5px;">
+                    <i class="fas fa-redo"></i> Regenerate
+                </button>
+            </td>
+        `;
+        historyTableBody.appendChild(row);
+    });
+
+    document.querySelectorAll('.view-report').forEach(button => {
+        button.addEventListener('click', function() {
+            const reportId = this.getAttribute('data-id');
+            const report = database.getReport(reportId);
+            if (report) {
+                document.getElementById('report').innerHTML = report.content;
+                document.querySelector('.nav-tab[data-tab="report"]').click();
+            }
+        });
+    });
+
+    document.querySelectorAll('.regenerate-report').forEach(button => {
+        button.addEventListener('click', function() {
+            const reportId = this.getAttribute('data-id');
+            const report = database.getReport(reportId);
+            if (report && confirm('Load this report data into the form?')) {
+                document.getElementById('patientId').value = report.patientId;
+                document.getElementById('patientName').value = report.patientName;
+                document.getElementById('ageSex').value = report.ageSex;
+                if (report.address) document.getElementById('patientAddress').value = report.address;
+                if (report.contact) document.getElementById('patientContact').value = report.contact;
+                document.querySelector(`input[name="reportType"][value="${report.type}"]`).checked = true;
+                document.querySelector(`input[name="reportType"][value="${report.type}"]`).dispatchEvent(new Event('change'));
+                document.querySelector('.nav-tab[data-tab="form"]').click();
+                document.getElementById('patientName').focus();
+            }
+        });
+    });
+}
+
+function getReportTypeName(type) {
+    switch(type) {
+        case 'general': return 'General USG';
+        case 'obstetrical': return 'Obstetrical USG';
+        case 'gynecological': return 'Gynecological USG';
+        default: return type;
+    }
+}
+
+function getReportBadgeClass(type) {
+    switch(type) {
+        case 'general': return 'badge-primary';
+        case 'obstetrical': return 'badge-success';
+        case 'gynecological': return 'badge-warning';
+        default: return 'badge-primary';
+    }
+}
+
+function loadSampleData() {
+    database.patients.push(
+        { id: 'P001', name: '', ageSex: '30/F', address: 'Kathmandu', contact: '1234567890' }
+    );
+    const today = new Date().toISOString().split('T')[0];
+    database.reports.push(
+        {
+            id: 'R001',
+            patientId: 'P001',
+            patientName: '',
+            ageSex: '30/F',
+            address: 'Kathmandu',
+            contact: '1234567890',
+            date: today,
+            type: 'obstetrical',
+            content: generateObstetricalReport('व. उल्ड्रीटा कपीलसन', 'Kathmandu', '1234567890', '30/F', 'Dr. Sharma', new Date(today).toLocaleDateString())
+        }
+    );
+    database.savePatients();
+    database.saveReports();
+}
+
+function generateGeneralReport(name, address, contact, ageSex, refBy, date) {
+    const isFemale = ageSex.toUpperCase().endsWith('/F');
+
+    // Common abdominal findings
+    const liverSize = document.querySelector('input[name="liverSize"]:checked').value;
+    const liverShape = document.querySelector('input[name="liverShape"]:checked').value;
+    const liverParenchyma = document.querySelector('input[name="liverParenchyma"]:checked').value;
+    const liverLesion = document.querySelector('input[name="liverLesion"]:checked').value;
+
+    const gallBladderStatus = document.querySelector('input[name="gallBladderStatus"]:checked').value;
+    const gallBladderFindings = Array.from(document.querySelectorAll('input[name="gallBladderFindings"]:checked')).map(cb => cb.value).join(', ') || 'None';
+    const gallBladderWallThickness = document.querySelector('input[name="gallBladderWallThickness"]').value || 'Not specified';
+
+    const pancreasSize = document.querySelector('input[name="pancreasSize"]').value || 'Not specified';
+    const cbdSize = document.querySelector('input[name="cbdSize"]:checked').value;
+    const cbdStone = document.querySelector('input[name="cbdStone"]').value || 'None';
+
+    const spleenSize = document.querySelector('input[name="spleenSize"]:checked').value;
+
+    const rightKidneySize = document.querySelector('input[name="rightKidneySize"]:checked').value;
+    const rightKidneyFindings = Array.from(document.querySelectorAll('input[name="rightKidneyFindings"]:checked')).map(cb => cb.value).join(', ') || 'None';
+
+    const leftKidneySize = document.querySelector('input[name="leftKidneySize"]:checked').value;
+    const leftKidneyFindings = Array.from(document.querySelectorAll('input[name="leftKidneyFindings"]:checked')).map(cb => cb.value).join(', ') || 'None';
+
+    const bladderStatus = document.querySelector('input[name="bladderStatus"]:checked').value;
+    const bladderFindings = Array.from(document.querySelectorAll('input[name="bladderFindings"]:checked')).map(cb => cb.value).join(', ') || 'None';
+
+    // Sex-specific findings
+    let sexSpecificFindings = '';
+    let endometriumFindings = '';
+    let pouchFindings = '';
+    let ovaryFindings = '';
+
+    if (isFemale) {
+        const uterusSize = document.querySelector('input[name="uterusSize"]:checked').value;
+        const uterusPosition = document.querySelector('input[name="uterusPosition"]:checked').value;
+        const uterusFibroid = document.querySelector('input[name="uterusFibroid"]:checked') ? 'Present' : 'Absent';
+        const endometriumStatus = document.querySelector('input[name="endometriumStatus"]:checked').value;
+        const endometriumFluid = document.querySelector('input[name="endometriumFluid"]').value || 'Not specified';
+        const pouchStatus = document.querySelector('input[name="pouchStatus"]:checked').value;
+
+        const rightOvarySize = document.querySelector('input[name="rightOvarySize"]:checked').value;
+        const rightOvaryFindings = Array.from(document.querySelectorAll('input[name="rightOvaryFindings"]:checked')).map(cb => cb.value).join(', ') || 'None';
+        const leftOvarySize = document.querySelector('input[name="leftOvarySize"]:checked').value;
+        const leftOvaryFindings = Array.from(document.querySelectorAll('input[name="leftOvaryFindings"]:checked')).map(cb => cb.value).join(', ') || 'None';
+
+        sexSpecificFindings = `
+            <div style="background-color: black; color: white; padding: 4px;" class="subtitle">GYNECOLOGICAL FINDINGS</div>
+            <div><strong>UTERUS:</strong> Size: ${uterusSize}, Position: ${uterusPosition}, Fibroid: ${uterusFibroid}</div>
+        `;
+
+        endometriumFindings = `
+            <div class="print-sub-section">ENDOMETRIUM</div>
+            <div class="print-finding-line"><span class="print-finding-label">Status:</span> ${endometriumStatus}</div>
+            <div class="print-finding-line"><span class="print-finding-label">Fluid:</span> ${endometriumFluid}</div>
+        `;
+
+        pouchFindings = `
+            <div class="print-sub-section">POUCH OF DOUGLAS</div>
+            <div class="print-finding-line"><span class="print-finding-label">Status:</span> ${pouchStatus}</div>
+        `;
+
+        ovaryFindings = `
+            <div class="print-sub-section">OVARIES</div>
+            <div class="print-finding-line"><span class="print-finding-label">Right Ovary:</span> Size: ${rightOvarySize}, Findings: ${rightOvaryFindings}</div>
+            <div class="print-finding-line"><span class="print-finding-label">Left Ovary:</span> Size: ${leftOvarySize}, Findings: ${leftOvaryFindings}</div>
+        `;
+    } else {
+        const prostateSize = document.querySelector('input[name="prostateSize"]:checked').value;
+        const prostateVolume = document.querySelector('input[name="prostateVolume"]').value || 'Not specified';
+
+        sexSpecificFindings = `
+            <div style="background-color: black; color: white; padding: 4px;" class="subtitle">PROSTATE FINDINGS</div>
+            <div><strong>Prostate Size:</strong> ${prostateSize}, <strong>Volume:</strong> ${prostateVolume}</div>
+        `;
+    }
+
+    const conclusion = document.querySelector('textarea[name="conclusion"]').value || 'No significant abnormalities detected.';
+
+    return `
+        <div class="print-layout">
+            <div class="print-doctor-info">
+                <h3>आजाद फार्मेसी</h3>
+                <p><strong>डा. कुरेश आजाद</strong><br>
+                MBBS, M.PHIL (Pakistan)<br>
+                NMC R.No. 9005<br>
+                फेमिली फिजिसियन तथा सोनोलोजिस्ट</p>
+                <h3>सुविधाहरु :-</h3>
+                <ul>
+                    <li>Pharmacy (औषधि)</li>
+                    <li>USG (भिडियो एक्सरे)</li>
+                    <li>ECG (मुटु परिक्षण)</li>
+                    <li>Lab (रगत परिक्षण)</li>
+                    <li>Otoscope (कान परिक्षण)</li>
+                    <li>Fundoscope (आँखा जाँच)</li>
+                </ul>
+                <p>फेमिली फिजिसियन अर्थात पारिवारिक चिकित्सक द्वारा परिवारमित्र महिला र पुरुषमा बच्चा देखी वृद्ध सम्ममा आइपर्ने सामान्य शारीरिक तथा मानसिक समस्याहरुलाई आवश्यकतानुसार माथि उल्लेखित उपकरणहरु द्वारा परिक्षण गरि सजिलो र सुलभ माध्यममा उपचार गरिन्छ।</p>
+                <p>यदि समस्यामा जटिलता देखिएमा वा यस संस्थाबाट उपचार सम्भव नभएमा उचित संस्था र स्थानको लागि परामर्श दिई चिकित्सकीय जिम्मेवारी वहन गरिन्छ।</p>
+                <p>हाम्रो जिम्मेवारी र तपाईंको समझदारीबाट नै समस्यामाथि जित हुनेछ। बिहान ८ बजे देखि बेलुका ७ बजेसम्म।</p>
+            </div>
+
+            <div class="print-report-content">
+                <div class="report-header">
+                    <h2>ULTRASOUND REPORT</h2>
+                    <div>Scanned by Dr. Kuresh Ajad</div>
+                </div>
+
+                <div class="report-details">
+                    <table class="report-table">
+                        <tr><td><strong>Name:</strong></td><td>${name}</td><td><strong>Age/Sex:</strong></td><td>${ageSex}</td></tr>
+                        <tr><td><strong>Address:</strong></td><td>${address}</td><td><strong>Date:</strong></td><td>${date}</td></tr>
+                        <tr><td><strong>Scan by:</strong></td><td>Kuresh Ajad</td><td><strong>Ref by:</strong></td><td>${refBy}</td></tr>
+                    </table>
+                </div>
+
+                <div style="background-color: black; color: white; padding: 4px;" class="subtitle">ABDOMINAL FINDINGS</div>
+                <div class="report-content">
+                    <div><strong>LIVER:</strong> Size: ${liverSize}, Shape: ${liverShape}, Parenchyma: ${liverParenchyma}, Focal Mass Lesion: ${liverLesion}</div>
+                    <div><strong>GALL BLADDER:</strong> Status: ${gallBladderStatus}, Findings: ${gallBladderFindings}, Wall Thickness: ${gallBladderWallThickness}</div>
+                    <div><strong>PANCREAS:</strong> Size: ${pancreasSize}, CBD Size: ${cbdSize}, Stone: ${cbdStone}</div>
+                    <div><strong>SPLEEN:</strong> Size: ${spleenSize}</div>
+                    <div><strong>RIGHT KIDNEY:</strong> Size: ${rightKidneySize}, Findings: ${rightKidneyFindings}</div>
+                    <div><strong>LEFT KIDNEY:</strong> Size: ${leftKidneySize}, Findings: ${leftKidneyFindings}</div>
+                    <div><strong>URINARY BLADDER:</strong> Status: ${bladderStatus}, Findings: ${bladderFindings}</div>
+
+                    ${sexSpecificFindings}
+                    ${endometriumFindings}
+                    ${pouchFindings}
+                    ${ovaryFindings}
+
+                    <div class="print-section-header">CONCLUSION</div>
+                    <p>${conclusion}</p>
+                </div>
+
+                <div class="report-footer">
+                    
+                    <div class="signature">Dr. Kuresh Ajad<br>MBBS, M.PHIL (Pakistan)<br>NMC R.No. 9005</div>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+
+function generateObstetricalReport(name, address, contact, ageSex, refBy, date) {
+    const gestationType = document.querySelector('input[name="gestationType"]:checked')?.value || 'Not specified';
+    const meanSacDiameter = document.querySelector('input[name="meanSacDiameter"]')?.value || 'Not specified';
+    const sacContour = document.querySelector('input[name="sacContour"]:checked')?.value || 'Not specified';
+    const decidualReaction = document.querySelector('input[name="decidualReaction"]:checked')?.value || 'Not specified';
+    const crl = document.querySelector('input[name="crl"]')?.value || 'Not specified';
+    const crlWeeks = document.querySelector('input[name="crlWeeks"]')?.value || 'W';
+    const crlDays = document.querySelector('input[name="crlDays"]')?.value || 'D';
+    const cardiacFlicker = document.querySelector('input[name="cardiacFlicker"]')?.value || 'Not specified';
+    const bpd = document.querySelector('input[name="bpd"]')?.value || 'Not specified';
+    const bpdWeeks = document.querySelector('input[name="bpdWeeks"]')?.value || 'W';
+    const bpdDays = document.querySelector('input[name="bpdDays"]')?.value || 'D';
+    const fl = document.querySelector('input[name="fl"]')?.value || 'Not specified';
+    const flWeeks = document.querySelector('input[name="flWeeks"]')?.value || 'W';
+    const flDays = document.querySelector('input[name="flDays"]')?.value || 'D';
+    const edd = document.querySelector('input[name="edd"]')?.value || 'Not specified';
+    const findings = document.querySelector('input[name="intrauterineFindings"]')?.value || 'Not specified';
+    const fetalOrgans = document.querySelector('input[name="fetalOrgans"]')?.value || 'Not specified';
+    const placenta = document.querySelector('input[name="placenta"]:checked')?.value || 'Not specified';
+    const presentation = document.querySelector('input[name="presentation"]:checked')?.value || 'Not specified';
+    const lie = document.querySelector('input[name="lie"]:checked')?.value || 'Not specified';
+    const placentalMaturity = document.querySelector('input[name="placentalMaturity"]')?.value || 'Not specified';
+    const amnioticFluid = document.querySelector('input[name="amnioticFluid"]:checked')?.value || 'Not specified';
+    const umbilicalCord = document.querySelector('input[name="umbilicalCord"]:checked')?.value || 'Not specified';
+    const afi = document.querySelector('input[name="afi"]')?.value || 'Not specified';
+    const fetalWeight = document.querySelector('input[name="fetalWeight"]')?.value || 'Not specified';
+    const heartBeat = document.querySelector('input[name="heartBeat"]')?.value || 'Not specified';
+    const conclusion = document.querySelector('textarea[name="conclusion"]')?.value || `Single live intrauterine pregnancy with normal fetal cardiac activity.`;
+
+    return `
+        <div class="print-layout">
+            <div class="print-doctor-info">
+                <h3>आजाद फार्मेसी</h3>
+                <p><strong>डा. कुरेश आजाद</strong><br>
+                MBBS, M.PHIL (Pakistan)<br>
+                NMC R.No. 9005<br>
+                फेमिली फिजिसियन तथा सोनोलोजिस्ट</p>
+                <h3>सुविधाहरु :-</h3>
+                <ul>
+                    <li>Pharmacy (औषधि)</li>
+                    <li>USG (भिडियो एक्सरे)</li>
+                    <li>ECG (मुटु परिक्षण)</li>
+                    <li>Lab (रगत परिक्षण)</li>
+                    <li>Otoscope (कान परिक्षण)</li>
+                    <li>Fundoscope (आँखा जाँच)</li>
+                </ul>
+                <p>फेमिली फिजिसियन अर्थात पारिवारिक चिकित्सक द्वारा परिवारमित्र महिला र पुरुषमा बच्चा देखी वृद्ध सम्ममा आइपर्ने सामान्य शारीरिक तथा मानसिक समस्याहरुलाई आवश्यकतानुसार माथि उल्लेखित उपकरणहरु द्वारा परिक्षण गरि सजिलो र सुलभ माध्यममा उपचार गरिन्छ।</p>
+                <p>यदि समस्यामा जटिलता देखिएमा वा यस संस्थाबाट उपचार सम्भव नभएमा उचित संस्था र स्थानको लागि परामर्श दिई चिकित्सकीय जिम्मेवारी वहन गरिन्छ।</p>
+                <p>हाम्रो जिम्मेवारी र तपाईंको समझदारीबाट नै समस्यामाथि जित हुनेछ। बिहान ८ बजे देखि बेलुका ७ बजेसम्म।</p>
+            </div>
+            
+            <div class="print-report-content">
+                <div class="report-header">
+                     
+                    <div>Scanned by Dr. Kuresh Ajad</div>
+                </div>
+                <div class="report-details">
+                    <table class="report-table">
+                        <tr>
+                            <td><strong>Name:</strong></td><td>${name}</td>
+                            <td><strong>Age/Sex:</strong></td><td>${ageSex}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Address:</strong></td><td>${address}</td>
+                            <td><strong>Date:</strong></td><td>${date}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Scan by:</strong></td><td>Kuresh Ajad</td>
+                            <td><strong>Ref by:</strong></td><td>${refBy}</td>
+                        </tr>
+                    </table>
+                </div>
+<div style="background-color: black; color: white; padding: 4px;" class="subtitle">OBSTERICAL ULTRASOUND REPORTFINDINGS</div>
+                <div class="report-content">
+                    <div><strong>Gestation Type:</strong> ${gestationType}</div>
+                    <div><strong>Gestational Sac:</strong> ${meanSacDiameter} mm, Contour: ${sacContour}, Decidual Reaction: ${decidualReaction}</div>
+                    <div><strong>CRL:</strong> ${crl} mm (${crlWeeks}W ${crlDays}D)</div>
+                    <div><strong>Cardiac Reactivity:</strong> ${cardiacFlicker} /min</div>
+                    <div><strong>BPD:</strong> ${bpd} mm (${bpdWeeks}W ${bpdDays}D)</div>
+                    <div><strong>FL:</strong> ${fl} mm (${flWeeks}W ${flDays}D)</div>
+                    <div><strong>EDD:</strong> ${edd} +07 Days</div>
+                    <div><strong>Ultrasonic Intrauterine Findings:</strong> ${findings}</div>
+                    <div><strong>Fetal Organs:</strong> ${fetalOrgans}</div>
+                    <div><strong>Placenta:</strong> ${placenta}</div>
+                    <div><strong>Presentation:</strong> ${presentation}</div>
+                    <div><strong>LIE:</strong> ${lie}</div>
+                    <div><strong>Placental Maturity:</strong> Grade ${placentalMaturity}</div>
+                    <div><strong>Amniotic Fluid:</strong> ${amnioticFluid}</div>
+                    <div><strong>Umbilical Cord:</strong> ${umbilicalCord}</div>
+                    <div><strong>AFI:</strong> ${afi}</div>
+                    <div><strong>Fetal Weight:</strong> ${fetalWeight}</div>
+                    <div><strong>Heart Beat:</strong> ${heartBeat}</div>
+
+                    <div class="print-section-header">CONCLUSION</div>
+                    <p>${conclusion}</p>
+                </div>
+
+                <div class="report-footer">
+                    
+                    <div class="signature">Dr. Kuresh Ajad<br>MBBS, M.PHIL (Pakistan)<br>NMC R.No. 9005</div>
+                    <div>Not For Medicolegal</div>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+
+function generateGynecologicalReport(name, address, contact, ageSex, refBy, date) {
+    const uterusSize = document.querySelector('input[name="uterusSize"]:checked').value;
+    const uterusPosition = document.querySelector('input[name="uterusPosition"]:checked').value;
+    const uterusFibroid = document.querySelector('input[name="uterusFibroid"]:checked') ? 'Present' : 'Absent';
+    const endometriumStatus = document.querySelector('input[name="endometriumStatus"]:checked').value;
+    const endometriumFluid = document.querySelector('input[name="endometriumFluid"]').value || 'Not specified';
+    const pouchStatus = document.querySelector('input[name="pouchStatus"]:checked').value;
+    const rightOvarySize = document.querySelector('input[name="rightOvarySize"]:checked').value;
+    const rightOvaryFindings = Array.from(document.querySelectorAll('input[name="rightOvaryFindings"]:checked')).map(cb => cb.value).join(', ') || 'None';
+    const leftOvarySize = document.querySelector('input[name="leftOvarySize"]:checked').value;
+    const leftOvaryFindings = Array.from(document.querySelectorAll('input[name="leftOvaryFindings"]:checked')).map(cb => cb.value).join(', ') || 'None';
+    const conclusion = document.querySelector('textarea[name="conclusion"]').value || 'Normal gynecological ultrasound findings.';
+
+    return `
+        <div class="print-layout">
+            <div class="print-doctor-info">
+                <h3>आजाद फार्मेसी</h3>
+                <p><strong>डा. कुरेश आजाद</strong><br>
+                MBBS, M.PHIL (Pakistan)<br>
+                NMC R.No. 9005<br>
+                फेमिली फिजिसियन तथा सोनोलोजिस्ट</p>
+                <h3>सुविधाहरु :-</h3>
+                <ul>
+                    <li>Pharmacy (औषधि)</li>
+                    <li>USG (भिडियो एक्सरे)</li>
+                    <li>ECG (मुटु परिक्षण)</li>
+                    <li>Lab (रगत परिक्षण)</li>
+                    <li>Otoscope (कान परिक्षण)</li>
+                    <li>Fundoscope (आँखा जाँच)</li>
+                </ul>
+                <p>फेमिली फिजिसियन अर्थात पारिवारिक चिकित्सक द्वारा परिवारमित्र महिला र पुरुषमा बच्चा देखी वृद्ध सम्ममा आइपर्ने सामान्य शारीरिक तथा मानसिक समस्याहरुलाई आवश्यकतानुसार माथि उल्लेखित उपकरणहरु द्वारा परिक्षण गरि सजिलो र सुलभ माध्यममा उपचार गरिन्छ।</p>
+                <p>यदि समस्यामा जटिलता देखिएमा वा यस संस्थाबाट उपचार सम्भव नभएमा उचित संस्था र स्थानको लागि परामर्श दिई चिकित्सकीय जिम्मेवारी वहन गरिन्छ।</p>
+                <p>हाम्रो जिम्मेवारी र तपाईंको समझदारीबाट नै समस्यामाथि जित हुनेछ। बिहान ८ बजे देखि बेलुका ७ बजेसम्म।</p>
+            </div>
+            
+            <div class="print-report-content">
+                <div class="report-header">
+                    <h2>GYNECOLOGICAL ULTRASOUND REPORT</h2>
+                    <div>Scanned by Dr. Kuresh Ajad</div>
+                </div>
+                <div class="report-details">
+                    <div><strong>Name:</strong> ${name} <strong>Age/Sex:</strong> ${ageSex}</div>
+                    <div><strong>Address:</strong> ${address} <strong>Date:</strong> ${date}</div>
+                    <div><strong>scan by:</strong> kuresh Ajad <strong>Ref by:</strong> ${refBy}</div>
+                </div>
+                <div class="report-content">
+                  <div>
+  <strong>UTERUS:</strong>
+  <span>Size: ${uterusSize}</span>&nbsp;&nbsp;
+  <span>Position: ${uterusPosition}</span>&nbsp;&nbsp;
+  <span>Fibroid: ${uterusFibroid}</span>
+</div>
+
+                    
+                    <div class="print-section-header">ENDOMETRIUM</div>
+                    <div class="print-finding-line">
+                        <span class="print-finding-label">Status:</span> ${endometriumStatus}
+                    </div>
+                    <div class="print-finding-line">
+                        <span class="print-finding-label">Fluid:</span> ${endometriumFluid}
+                    </div>
+                    
+                    <div class="print-section-header">POUCH OF DOUGLAS</div>
+                    <div class="print-finding-line">
+                        <span class="print-finding-label">Status:</span> ${pouchStatus}
+                    </div>
+                    
+                    <div class="print-section-header">OVARIES</div>
+                    <div class="print-finding-line">
+                        <span class="print-finding-label">Right Ovary:</span> Size: ${rightOvarySize}, Findings: ${rightOvaryFindings}
+                    </div>
+                    <div class="print-finding-line">
+                        <span class="print-finding-label">Left Ovary:</span> Size: ${leftOvarySize}, Findings: ${leftOvaryFindings}
+                    </div>
+                    
+                   <div style="background-color: black; color: white; padding: 4px; class="subtitle">
+  CONCLUSION
+</div>
+
+                    <p>${conclusion}</p>
+                </div>
+                <div class="report-footer">
+                    
+                    <div class="signature">Dr. Kuresh Ajad<br>MBBS, M.PHIL (Pakistan)<br>NMC R.No. 9005</div>
+                </div>
+            </div>
+        </div>
+    `;
+}
+    </script>
+</body>
+</html>
